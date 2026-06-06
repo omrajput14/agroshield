@@ -43,6 +43,7 @@ def seed_db():
         farmer = User(
             email="farmer@agroshield.ai",
             name="Rajesh Patil",
+            phone="+15550123456",
             role=UserRole.farmer,
             hashed_password=get_password_hash("password123")
         )
@@ -52,8 +53,8 @@ def seed_db():
         print("Seeding Farms...")
         farms_data = [
             {
-                "name": 'Cavendish Valley Farm',
-                "location": 'Jalgaon, Maharashtra',
+                "name": "Uma's Valley of Trees",
+                "location": 'Wade',
                 "latitude": 21.0077,
                 "longitude": 75.5626,
                 "area_acres": 45,
@@ -66,8 +67,8 @@ def seed_db():
                 "threshold_critical": 45,
             },
             {
-                "name": 'Green Horizon Plantation',
-                "location": 'Anand, Gujarat',
+                "name": 'Aayush Horizon Plantation',
+                "location": 'Shindi',
                 "latitude": 22.5645,
                 "longitude": 72.9289,
                 "area_acres": 72,
@@ -80,8 +81,8 @@ def seed_db():
                 "threshold_critical": 40,
             },
             {
-                "name": 'Nandini Banana Estate',
-                "location": 'Thrissur, Kerala',
+                "name": 'Prakash Banana Estate',
+                "location": 'Jalgaon',
                 "latitude": 10.5276,
                 "longitude": 76.2144,
                 "area_acres": 28,
@@ -95,7 +96,7 @@ def seed_db():
             },
             {
                 "name": 'Sakshi Agro Farm',
-                "location": 'Trichy, Tamil Nadu',
+                "location": 'Nashik',
                 "latitude": 10.7905,
                 "longitude": 78.7047,
                 "area_acres": 55,

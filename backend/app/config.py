@@ -17,5 +17,10 @@ class Settings:
     )
     FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:5173")
 
+    # Optional: Twilio SMS Configuration
+    TWILIO_ACCOUNT_SID: str = os.getenv("TWILIO_ACCOUNT_SID")
+    TWILIO_AUTH_TOKEN: str = os.getenv("TWILIO_AUTH_TOKEN")
+    TWILIO_FROM_PHONE: str = os.getenv("TWILIO_FROM_PHONE")
+
 
 settings = Settings()

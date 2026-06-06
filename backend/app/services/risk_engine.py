@@ -5,6 +5,8 @@ from app.models.farm import Farm, RiskLevel, NetStatus
 from app.models.sensor_reading import SensorReading
 from app.models.event import Event, EventType, EventSeverity
 from app.models.net_deployment import NetDeployment, DeployAction, DeployTrigger
+from app.models.user import User
+from app.services.notification_service import send_sms
 
 
 def calculate_risk_level(wind_speed: float, farm: Farm) -> RiskLevel:
@@ -49,6 +51,12 @@ def process_sensor_reading(db: Session, farm: Farm, reading: SensorReading):
             message=f"Windbreak nets auto-deployed — wind speed exceeded {farm.threshold_deploy} km/h threshold"
         )
         db.add(event)
+        
+        # Send SMS Notification
+        owner = db.query(User).filter(User.id == farm.owner_id).first()
+        if owner and owner.phone:
+            msg = f"AGROSHIELD ALERT: Windbreak nets AUTO-DEPLOYED at {farm.name}. Wind speeds reached {reading.wind_speed} km/h."
+            send_sms(owner.phone, msg)
     
     # Create alert event if risk escalated
     elif risk_changed and new_risk == RiskLevel.severe:
@@ -59,5 +67,11 @@ def process_sensor_reading(db: Session, farm: Farm, reading: SensorReading):
             message=f"SEVERE WIND ALERT — Wind speed reached {reading.wind_speed} km/h. Immediate action required."
         )
         db.add(event)
+        
+        # Send SMS Notification
+        owner = db.query(User).filter(User.id == farm.owner_id).first()
+        if owner and owner.phone:
+            msg = f"AGROSHIELD CRITICAL: SEVERE WIND ALERT at {farm.name}. Wind speed is {reading.wind_speed} km/h. Check dashboard immediately."
+            send_sms(owner.phone, msg)
         
     db.commit()
