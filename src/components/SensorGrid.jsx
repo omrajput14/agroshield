@@ -42,7 +42,7 @@ export default function SensorGrid({ sensors }) {
               <sensor.icon className={`w-3.5 h-3.5 ${isWarning ? 'text-red-400' : sensor.color}`} />
               <span className="sensor-label">{sensor.label}</span>
             </div>
-            <div className={`sensor-value ${isWarning ? 'text-red-400' : 'text-slate-100'}`}>
+            <div className={`sensor-value ${isWarning ? 'text-red-400' : sensor.color}`}>
               {value}
               <span className="text-sm font-normal text-slate-500 ml-1">{sensor.unit}</span>
             </div>

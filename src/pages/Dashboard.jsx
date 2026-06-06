@@ -52,6 +52,13 @@ export default function Dashboard() {
         lastUpdated: new Date().toISOString(),
       }));
 
+      // Custom sort to always show Sakshi Agro Farm first in layout
+      mappedFarms.sort((a, b) => {
+        if (a.name === 'Sakshi Agro Farm') return -1;
+        if (b.name === 'Sakshi Agro Farm') return 1;
+        return 0;
+      });
+
       const mappedEvents = eventsRes.map(event => ({
         ...event,
         farmName: event.farm_name,
@@ -127,9 +134,9 @@ export default function Dashboard() {
 
   // Format windTrendData from forecasts
   const windTrendData = forecasts.hourly.slice(0, 24).map(h => ({
-    time: h.time,
-    speed: h.windSpeed,
-    gust: h.windGust,
+    label: h.time,
+    windSpeed: h.windSpeed,
+    windGust: h.windGust,
     threshold: 35
   }));
 
