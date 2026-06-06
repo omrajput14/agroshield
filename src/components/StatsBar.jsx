@@ -4,8 +4,9 @@ export default function StatsBar({ farms, analytics }) {
   const severeCount = farms.filter((f) => f.riskLevel === 'severe').length;
   const highCount = farms.filter((f) => f.riskLevel === 'high').length;
   const deployedCount = farms.filter((f) => f.netStatus === 'deployed').length;
-  const maxWind = Math.max(...farms.map((f) => f.sensors.windSpeed));
-  const avgWind = Math.round(farms.reduce((s, f) => s + f.sensors.windSpeed, 0) / farms.length * 10) / 10;
+  const validFarms = farms.filter(f => f.sensors);
+  const maxWind = validFarms.length > 0 ? Math.max(...validFarms.map((f) => f.sensors.windSpeed || 0)) : 0;
+  const avgWind = validFarms.length > 0 ? Math.round(validFarms.reduce((s, f) => s + (f.sensors.windSpeed || 0), 0) / validFarms.length * 10) / 10 : 0;
 
   const stats = [
     {
@@ -41,14 +42,14 @@ export default function StatsBar({ farms, analytics }) {
     },
     {
       label: 'Sensors Online',
-      value: analytics.totalSensors,
+      value: analytics?.total_sensors || 0,
       icon: Radio,
       color: 'text-indigo-400',
       bgColor: 'bg-indigo-500/10',
     },
     {
       label: 'Uptime',
-      value: `${analytics.uptime}%`,
+      value: `${analytics?.uptime_percentage || 0}%`,
       icon: Zap,
       color: 'text-emerald-400',
       bgColor: 'bg-emerald-500/10',

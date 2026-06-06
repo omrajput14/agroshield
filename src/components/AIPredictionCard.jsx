@@ -1,5 +1,5 @@
 import { BrainCircuit, TrendingUp, AlertTriangle } from 'lucide-react';
-import { getRiskColor } from '../data/mockData';
+import { getRiskColor } from '../utils/helpers';
 
 export default function AIPredictionCard({ predictions }) {
   return (

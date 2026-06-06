@@ -1,63 +1,146 @@
 import { useState, useEffect } from 'react';
-import { Search, RefreshCw, Filter, MapPin } from 'lucide-react';
+import { Search, RefreshCw, Filter, MapPin, Loader2 } from 'lucide-react';
 import FarmCard from '../components/FarmCard';
 import StatsBar from '../components/StatsBar';
 import NetStatusPanel from '../components/NetStatusPanel';
 import WindTrendChart from '../components/WindTrendChart';
 import EventFeed from '../components/EventFeed';
 import AIPredictionCard from '../components/AIPredictionCard';
-import {
-  farms as initialFarms,
-  recentEvents,
-  windTrendData,
-  analyticsData,
-  aiPredictions,
-} from '../data/mockData';
+import { api } from '../api';
 
 export default function Dashboard() {
-  const [farms, setFarms] = useState(initialFarms);
+  const [farms, setFarms] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
+  const [predictions, setPredictions] = useState([]);
+  const [forecasts, setForecasts] = useState({ hourly: [] });
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [riskFilter, setRiskFilter] = useState('all');
   const [lastRefresh, setLastRefresh] = useState(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Simulated live updates
+  const fetchData = async () => {
+    try {
+      const [farmsRes, eventsRes, analyticsRes, predictionsRes, forecastsRes] = await Promise.all([
+        api.get('/farms'),
+        api.get('/events?limit=5'),
+        api.get('/analytics/dashboard'),
+        api.get('/predictions'),
+        api.get('/forecasts'),
+      ]);
+      const mappedFarms = farmsRes.map(farm => ({
+        ...farm,
+        riskLevel: farm.risk_level,
+        netStatus: farm.net_status,
+        areaAcres: farm.area_acres,
+        owner: farm.owner_id === 1 ? 'Admin' : (farm.owner_id === 3 ? 'Rajesh Patil' : 'Manager'), // simple mapping for owner
+        sensors: farm.sensors ? {
+          windSpeed: farm.sensors.wind_speed,
+          windGust: farm.sensors.wind_gust,
+          windDirection: farm.sensors.wind_direction,
+          temperature: farm.sensors.temperature,
+          humidity: farm.sensors.humidity,
+          rainfall: farm.sensors.rainfall,
+          batteryLevel: farm.sensors.battery_level,
+          solarOutput: farm.sensors.solar_output,
+        } : null,
+        area: farm.area_acres,
+        variety: 'Grand Naine', // Default or fallback
+        thresholds: { deployNet: farm.wind_threshold },
+        lastUpdated: new Date().toISOString(),
+      }));
+
+      const mappedEvents = eventsRes.map(event => ({
+        ...event,
+        farmName: event.farm_name,
+        createdAt: event.created_at,
+        timestamp: event.created_at,
+      }));
+
+      const mappedPredictions = predictionsRes.map(pred => ({
+        ...pred,
+        farmId: pred.farm_id,
+        farmName: pred.farm_name,
+        damageProbability: pred.damage_probability,
+        predictedPeakWind: pred.predicted_peak_wind,
+        peakTime: pred.peak_time,
+        confidence: pred.confidence,
+        recommendation: pred.recommendation,
+      }));
+
+      setFarms(mappedFarms);
+      setEvents(mappedEvents);
+      setAnalytics(analyticsRes);
+      setPredictions(mappedPredictions);
+      setForecasts(forecastsRes);
+      setLastRefresh(new Date());
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Simulated live updates for visual jitter
+  useEffect(() => {
+    if (farms.length === 0) return;
     const interval = setInterval(() => {
       setFarms((prev) =>
-        prev.map((farm) => ({
-          ...farm,
-          sensors: {
-            ...farm.sensors,
-            windSpeed: Math.round((farm.sensors.windSpeed + (Math.random() - 0.5) * 3) * 10) / 10,
-            windGust: Math.round((farm.sensors.windGust + (Math.random() - 0.5) * 4) * 10) / 10,
-            temperature: Math.round((farm.sensors.temperature + (Math.random() - 0.5) * 0.3) * 10) / 10,
-            humidity: Math.min(100, Math.max(0, Math.round(farm.sensors.humidity + (Math.random() - 0.5) * 2))),
-          },
-          lastUpdated: new Date().toISOString(),
-        }))
+        prev.map((farm) => {
+          if (!farm.sensors) return farm;
+          return {
+            ...farm,
+            sensors: {
+              ...farm.sensors,
+              windSpeed: Math.round((farm.sensors.windSpeed + (Math.random() - 0.5) * 3) * 10) / 10,
+              windGust: Math.round((farm.sensors.windGust + (Math.random() - 0.5) * 4) * 10) / 10,
+              temperature: Math.round((farm.sensors.temperature + (Math.random() - 0.5) * 0.3) * 10) / 10,
+              humidity: Math.min(100, Math.max(0, Math.round(farm.sensors.humidity + (Math.random() - 0.5) * 2))),
+            },
+            lastUpdated: new Date().toISOString(),
+          };
+        })
       );
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [loading]);
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setIsRefreshing(true);
-    setTimeout(() => {
-      setLastRefresh(new Date());
-      setIsRefreshing(false);
-    }, 800);
+    await fetchData();
+    setIsRefreshing(false);
   };
+
+  if (loading) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
+      </div>
+    );
+  }
+
+  // Format windTrendData from forecasts
+  const windTrendData = forecasts.hourly.slice(0, 24).map(h => ({
+    time: h.time,
+    speed: h.windSpeed,
+    gust: h.windGust,
+    threshold: 35
+  }));
 
   const filteredFarms = farms
     .filter((farm) => {
-      if (riskFilter !== 'all' && farm.riskLevel !== riskFilter) return false;
+      if (riskFilter !== 'all' && farm.risk_level !== riskFilter) return false;
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
         return (
           farm.name.toLowerCase().includes(q) ||
-          farm.location.toLowerCase().includes(q) ||
-          farm.owner.toLowerCase().includes(q)
+          farm.location.toLowerCase().includes(q)
         );
       }
       return true;
@@ -90,7 +173,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Bar */}
-      <StatsBar farms={farms} analytics={analyticsData} />
+      {analytics && <StatsBar farms={farms} analytics={analytics.stats} />}
 
       {/* Search & Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
@@ -154,8 +237,8 @@ export default function Dashboard() {
         {/* Right Sidebar — 1/3 width */}
         <div className="space-y-4">
           <NetStatusPanel farms={farms} />
-          <AIPredictionCard predictions={aiPredictions} />
-          <EventFeed events={recentEvents} />
+          <AIPredictionCard predictions={predictions} />
+          <EventFeed events={events} />
         </div>
       </div>
     </div>

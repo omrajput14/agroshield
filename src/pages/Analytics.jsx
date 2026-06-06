@@ -1,25 +1,10 @@
-import { BarChart3, TrendingUp, Shield, DollarSign, Zap, Wind } from 'lucide-react';
-import { analyticsData } from '../data/mockData';
+import { useState, useEffect } from 'react';
+import { BarChart3, TrendingUp, Shield, DollarSign, Zap, Wind, Loader2 } from 'lucide-react';
+import { api } from '../api';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell, Legend
 } from 'recharts';
-
-const monthlyDeployments = [
-  { month: 'Jan', deployments: 8, losses: 120000, prevented: 380000 },
-  { month: 'Feb', deployments: 5, losses: 65000, prevented: 210000 },
-  { month: 'Mar', deployments: 12, losses: 180000, prevented: 520000 },
-  { month: 'Apr', deployments: 18, losses: 95000, prevented: 650000 },
-  { month: 'May', deployments: 22, losses: 210000, prevented: 780000 },
-  { month: 'Jun', deployments: 23, losses: 85000, prevented: 310000 },
-];
-
-const riskDistribution = [
-  { name: 'Safe', value: 45, color: '#22c55e' },
-  { name: 'Moderate', value: 30, color: '#f59e0b' },
-  { name: 'High', value: 18, color: '#f97316' },
-  { name: 'Severe', value: 7, color: '#ef4444' },
-];
 
 const responseTimeData = [
   { day: 'Mon', time: 3.8 },
@@ -48,11 +33,38 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function Analytics() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const response = await api.get('/analytics/dashboard');
+        setData(response);
+      } catch (error) {
+        console.error('Failed to fetch analytics', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAnalytics();
+  }, []);
+
+  if (loading || !data) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
+      </div>
+    );
+  }
+
+  const { stats, monthly_deployments, risk_distribution } = data;
+
   const statCards = [
-    { label: 'Total Deployments', value: analyticsData.totalDeployments, icon: Shield, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-    { label: 'Avg Response Time', value: `${analyticsData.avgResponseTime}s`, icon: Zap, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
-    { label: 'Losses Prevented', value: `₹${(analyticsData.lossesPreventedEstimate / 100000).toFixed(1)}L`, icon: DollarSign, color: 'text-teal-400', bg: 'bg-teal-500/10' },
-    { label: 'Alerts Sent', value: analyticsData.alertsSent, icon: Wind, color: 'text-amber-400', bg: 'bg-amber-500/10' },
+    { label: 'Total Deployments', value: stats.total_deployments, icon: Shield, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    { label: 'Avg Response Time', value: `${stats.avg_response_time}s`, icon: Zap, color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+    { label: 'Losses Prevented', value: `₹${(stats.losses_prevented_estimate / 100000).toFixed(1)}L`, icon: DollarSign, color: 'text-teal-400', bg: 'bg-teal-500/10' },
+    { label: 'Alerts Sent', value: stats.alerts_sent, icon: Wind, color: 'text-amber-400', bg: 'bg-amber-500/10' },
   ];
 
   return (
@@ -84,7 +96,7 @@ export default function Analytics() {
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={monthlyDeployments} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+              <BarChart data={monthly_deployments} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                 <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} tickLine={false} axisLine={{ stroke: '#1e293b' }} />
                 <YAxis tick={{ fill: '#64748b', fontSize: 10 }} tickLine={false} axisLine={{ stroke: '#1e293b' }} />
@@ -105,7 +117,7 @@ export default function Analytics() {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={riskDistribution}
+                  data={risk_distribution}
                   cx="50%"
                   cy="50%"
                   innerRadius={60}
@@ -113,7 +125,7 @@ export default function Analytics() {
                   paddingAngle={4}
                   dataKey="value"
                 >
-                  {riskDistribution.map((entry, index) => (
+                  {risk_distribution.map((entry, index) => (
                     <Cell key={index} fill={entry.color} fillOpacity={0.8} stroke="transparent" />
                   ))}
                 </Pie>
@@ -135,7 +147,7 @@ export default function Analytics() {
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={monthlyDeployments} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
+              <BarChart data={monthly_deployments} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
                 <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} tickLine={false} axisLine={{ stroke: '#1e293b' }} />
                 <YAxis tick={{ fill: '#64748b', fontSize: 10 }} tickLine={false} axisLine={{ stroke: '#1e293b' }} tickFormatter={(v) => `${v/1000}K`} />

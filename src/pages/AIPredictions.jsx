@@ -1,7 +1,38 @@
-import { BrainCircuit, TrendingUp, AlertTriangle, Target, Clock, Zap } from 'lucide-react';
-import { aiPredictions, farms, getRiskColor } from '../data/mockData';
+import { useState, useEffect } from 'react';
+import { BrainCircuit, TrendingUp, AlertTriangle, Target, Clock, Zap, Loader2 } from 'lucide-react';
+import { api } from '../api';
 
 export default function AIPredictions() {
+  const [predictions, setPredictions] = useState([]);
+  const [farms, setFarms] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [predsData, farmsData] = await Promise.all([
+          api.get('/predictions'),
+          api.get('/farms')
+        ]);
+        setPredictions(predsData);
+        setFarms(farmsData);
+      } catch (error) {
+        console.error('Failed to fetch AI predictions', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 pb-24 lg:pb-6">
       <div>
@@ -43,14 +74,14 @@ export default function AIPredictions() {
 
       {/* Predictions */}
       <div className="space-y-4">
-        {aiPredictions.map((pred, i) => {
-          const farm = farms.find((f) => f.id === pred.farmId);
-          const isCritical = pred.damageProbability > 0.85;
-          const isHigh = pred.damageProbability > 0.7;
+        {predictions.map((pred, i) => {
+          const farm = farms.find((f) => f.id === pred.farm_id);
+          const isCritical = pred.damage_probability > 0.85;
+          const isHigh = pred.damage_probability > 0.7;
 
           return (
             <div
-              key={pred.farmId}
+              key={pred.id}
               className={`glass-card overflow-hidden animate-slide-up ${
                 isCritical ? 'border-red-500/30' : isHigh ? 'border-amber-500/30' : ''
               }`}
@@ -63,18 +94,18 @@ export default function AIPredictions() {
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-base font-bold text-slate-100">{pred.farmName}</h3>
+                      <h3 className="text-base font-bold text-slate-100">{pred.farm_name}</h3>
                       {isCritical && <AlertTriangle className="w-5 h-5 text-red-400 animate-pulse" />}
                     </div>
                     {farm && (
-                      <p className="text-xs text-slate-400">{farm.location} • {farm.area} acres • {farm.variety}</p>
+                      <p className="text-xs text-slate-400">{farm.location} • {farm.area_acres} acres</p>
                     )}
                   </div>
                   <div className={`text-right px-4 py-2 rounded-xl ${
                     isCritical ? 'bg-red-500/10 border border-red-500/20' : isHigh ? 'bg-amber-500/10 border border-amber-500/20' : 'bg-emerald-500/10 border border-emerald-500/20'
                   }`}>
                     <div className={`text-2xl font-bold ${isCritical ? 'text-red-400' : isHigh ? 'text-amber-400' : 'text-emerald-400'}`}>
-                      {Math.round(pred.damageProbability * 100)}%
+                      {Math.round(pred.damage_probability * 100)}%
                     </div>
                     <div className="text-[10px] text-slate-500">Damage Risk</div>
                   </div>
@@ -87,7 +118,7 @@ export default function AIPredictions() {
                       className={`h-full rounded-full transition-all duration-1000 ${
                         isCritical ? 'bg-gradient-to-r from-red-600 to-red-400' : isHigh ? 'bg-gradient-to-r from-amber-600 to-amber-400' : 'bg-gradient-to-r from-emerald-600 to-emerald-400'
                       }`}
-                      style={{ width: `${pred.damageProbability * 100}%` }}
+                      style={{ width: `${pred.damage_probability * 100}%` }}
                     />
                   </div>
                 </div>
@@ -95,11 +126,11 @@ export default function AIPredictions() {
                 {/* Details grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
                   <div className="bg-slate-800/30 border border-slate-700/20 rounded-xl p-3 text-center">
-                    <div className="text-lg font-bold text-cyan-400">{pred.predictedPeakWind} <span className="text-xs text-slate-500">km/h</span></div>
+                    <div className="text-lg font-bold text-cyan-400">{pred.predicted_peak_wind} <span className="text-xs text-slate-500">km/h</span></div>
                     <div className="text-[9px] text-slate-500 uppercase">Peak Wind</div>
                   </div>
                   <div className="bg-slate-800/30 border border-slate-700/20 rounded-xl p-3 text-center">
-                    <div className="text-lg font-bold text-slate-200">{pred.peakTime}</div>
+                    <div className="text-lg font-bold text-slate-200">{pred.peak_time}</div>
                     <div className="text-[9px] text-slate-500 uppercase">Peak Time</div>
                   </div>
                   <div className="bg-slate-800/30 border border-slate-700/20 rounded-xl p-3 text-center">
@@ -107,7 +138,7 @@ export default function AIPredictions() {
                     <div className="text-[9px] text-slate-500 uppercase">Confidence</div>
                   </div>
                   <div className="bg-slate-800/30 border border-slate-700/20 rounded-xl p-3 text-center">
-                    <div className="text-lg font-bold text-emerald-400">{farm?.netStatus === 'deployed' ? '🛡️' : farm?.netStatus === 'deploying' ? '⚙️' : '📂'}</div>
+                    <div className="text-lg font-bold text-emerald-400">{farm?.net_status === 'deployed' ? '🛡️' : farm?.net_status === 'deploying' ? '⚙️' : '📂'}</div>
                     <div className="text-[9px] text-slate-500 uppercase">Net Status</div>
                   </div>
                 </div>

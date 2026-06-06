@@ -1,5 +1,5 @@
 import { MapPin, Clock, ChevronRight, Wifi } from 'lucide-react';
-import { getRiskColor, getNetStatusInfo, formatTimeAgo } from '../data/mockData';
+import { getRiskColor, getNetStatusInfo, formatTimeAgo } from '../utils/helpers';
 import SensorGrid from './SensorGrid';
 import WindRiskIndicator from './WindRiskIndicator';
 import { useState } from 'react';
@@ -39,7 +39,7 @@ export default function FarmCard({ farm, index }) {
 
           {/* Net status badge */}
           <div className={`flex items-center gap-1.5 ${netInfo.bg} px-3 py-1.5 rounded-full border border-slate-700/30`}>
-            <span className="text-sm">{netInfo.icon}</span>
+            <span className="text-sm"><netInfo.icon className="w-4 h-4" /></span>
             <span className={`text-xs font-semibold ${netInfo.color}`}>{netInfo.label}</span>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { ScrollText, Shield, AlertTriangle, Radio, Settings, CheckCircle2 } from 'lucide-react';
-import { formatTimeAgo } from '../data/mockData';
+import { formatTimeAgo } from '../utils/helpers';
 
 const eventIcons = {
   deployment: Shield,

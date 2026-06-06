@@ -1,4 +1,4 @@
-import { getRiskColor } from '../data/mockData';
+import { getRiskColor } from '../utils/helpers';
 import { Wind, AlertTriangle } from 'lucide-react';
 
 const riskLabels = {

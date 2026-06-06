@@ -1,0 +1,1 @@
+# AgroShield AI — Schemas package

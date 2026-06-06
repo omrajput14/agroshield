@@ -1,5 +1,5 @@
 import { Shield, FolderOpen, Loader2 } from 'lucide-react';
-import { getNetStatusInfo } from '../data/mockData';
+import { getNetStatusInfo } from '../utils/helpers';
 
 export default function NetStatusPanel({ farms }) {
   const deployed = farms.filter((f) => f.netStatus === 'deployed').length;
@@ -76,7 +76,7 @@ export default function NetStatusPanel({ farms }) {
             >
               <span className="text-xs text-slate-300 truncate mr-2">{farm.name}</span>
               <div className={`flex items-center gap-1.5 ${info.bg} px-2.5 py-1 rounded-full`}>
-                <span className="text-sm">{info.icon}</span>
+                <span className="text-sm"><info.icon className="w-3.5 h-3.5" /></span>
                 <span className={`text-[11px] font-semibold ${info.color}`}>{info.label}</span>
               </div>
             </div>

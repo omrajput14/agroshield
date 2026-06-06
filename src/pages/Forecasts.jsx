@@ -1,5 +1,6 @@
-import { CloudSun, Clock, Wind, Droplets, Thermometer } from 'lucide-react';
-import { forecastData } from '../data/mockData';
+import { useState, useEffect } from 'react';
+import { CloudSun, Clock, Droplets, Loader2 } from 'lucide-react';
+import { api } from '../api';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const riskColors = {
@@ -26,6 +27,32 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function Forecasts() {
+  const [forecastData, setForecastData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchForecasts = async () => {
+      try {
+        const response = await api.get('/forecasts');
+        
+        setForecastData(response);
+      } catch (error) {
+        console.error('Failed to fetch forecasts', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchForecasts();
+  }, []);
+
+  if (loading || !forecastData) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 pb-24 lg:pb-6">
       <div>
