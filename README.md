@@ -1,4 +1,8 @@
-# 🌪️ AgroShield AI: Software & Predictive Analytics Platform
+<p align="center">
+  <img src="images/logo.png" alt="AgroShield AI Logo" width="120" />
+</p>
+
+# AgroShield AI: Software & Predictive Analytics Platform
 
 > **AI-Driven Crop Protection & Intelligent Windbreak Net Automation for Banana Farmers**
 
@@ -162,7 +166,8 @@ flowchart TD
 │   │   └── ml_models/    # Trained Random Forest model binaries
 │   ├── scripts/          # ML training & storm simulation scripts
 │   └── requirements.txt
-├── images/               # App screenshots (used in this README)
+├── images/               # App screenshots and project logo (used in this README)
+│   ├── logo.png
 │   ├── dashboard.png
 │   ├── ai-predictions.png
 │   ├── analytics.png
