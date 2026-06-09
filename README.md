@@ -9,6 +9,10 @@
 > This repository contains the **Software and AI Platform** of AgroShield AI. This includes the FastAPI backend, the Random Forest predictive model, the JWT-based authentication system, and the React glassmorphism monitoring dashboard.  
 > **Note:** The physical hardware components (sensor nodes, ESP32/Arduino microcontroller firmware, anemometer/telemetry integration, and stepper motor actuators for deploying physical windbreak nets) are a separate phase of the project and will be added to this ecosystem in the future.
 
+> [!NOTE]
+> **Demo Data Notice**  
+> All numbers visible in the screenshots and the seeded database — including farm names, analytics figures (deployments, losses prevented, response times), sensor readings, AI model accuracy scores, and phone numbers — are **synthetic demo data generated for presentation purposes only**. They do not represent real farms, real sensor readings, or real financial figures.
+
 ---
 
 **AgroShield AI** is an advanced, real-time IoT monitoring and predictive analytics platform built specifically for banana farmers to protect their crops against severe winds, cyclones, and adverse weather conditions.
@@ -110,7 +114,7 @@ flowchart TD
 ## ✨ Key Features
 
 ### 🧠 Real-Time AI Prediction Engine
-*   Driven by a custom-trained **Random Forest Regressor** (Scikit-Learn) with **94.2% accuracy** and a **91.8% true positive rate**.
+*   Driven by a custom-trained **Random Forest Regressor** (Scikit-Learn) with **94.2% accuracy** and a **91.8% true positive rate** *(evaluated on synthetic/demo training data)*.
 *   Continuously analyses wind velocity, gust intensity, ambient temperature, humidity, farm area, and net coverage to output a live **Damage Probability Score (0–100%)**.
 *   Generates actionable AI recommendations per farm (e.g. *"High risk window approaching. Auto-deployment logic active."*).
 
@@ -124,7 +128,7 @@ flowchart TD
 *   Full audit log of all alerts, deployments, and system events in the **System Events** page.
 
 ### 📊 Premium Analytics Dashboard
-*   Tracks **147 total deployments**, **₹28.5L losses prevented**, and **4.2s average net response time**.
+*   Tracks **147 total deployments**, **₹28.5L losses prevented**, and **4.2s average net response time** *(demo figures — seeded for presentation)*.
 *   Risk distribution donut chart, monthly deployment bar charts, and net response time trend line.
 
 ### 📅 7-Day Weather Forecasts
