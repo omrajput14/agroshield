@@ -3,16 +3,16 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Revolution%20Automation-Project-10b981?style=for-the-badge&logo=anthropic&logoColor=white" alt="Revolution Automation" />
-  <img src="https://img.shields.io/badge/Built%20with-Anthropic%20Claude-6366f1?style=for-the-badge&logo=anthropic&logoColor=white" alt="Built with Anthropic" />
+  <img src="https://img.shields.io/badge/Revolution%20Automation-Project-10b981?style=for-the-badge" alt="Revolution Automation" />
   <img src="https://img.shields.io/badge/Phase-Software%20Only-f59e0b?style=for-the-badge" alt="Phase: Software Only" />
+  <img src="https://img.shields.io/badge/Stack-FastAPI%20%7C%20React%20%7C%20ML-3b82f6?style=for-the-badge" alt="Stack" />
 </p>
 
 # AgroShield AI: Software & Predictive Analytics Platform
 
 > **AI-Driven Crop Protection & Intelligent Windbreak Net Automation for Banana Farmers**
 
-> *This project was developed as part of the **Revolution Automation** initiative, exploring how Anthropic's Claude AI can be used as a development co-pilot to rapidly prototype real-world IoT and machine learning systems for agriculture. AgroShield AI is a proof-of-concept platform demonstrating the power of AI-assisted engineering — from database design and ML model training to a full-stack React dashboard — built by a student team.*
+> *AgroShield AI is a proof-of-concept platform developed as part of the **Revolution Automation** initiative — demonstrating how AI-assisted rapid prototyping can solve real-world problems in agriculture. Built by a student team, the system spans database design, ML model training, IoT integration planning, and a full-stack React dashboard.*
 
 ---
 
@@ -30,6 +30,12 @@
 **AgroShield AI** is an advanced, real-time IoT monitoring and predictive analytics platform built specifically for banana farmers to protect their crops against severe winds, cyclones, and adverse weather conditions.
 
 By combining live sensor telemetry with a Scikit-Learn Machine Learning engine, AgroShield AI proactively predicts crop damage probability and automatically deploys windbreak nets to save yields before storms hit.
+
+---
+
+## 🖼️ Project Showcase
+
+![AgroShield AI — Revolutionary Automated Crop Protection](assects/images/Revolutionary_Automated_Crop_Protection.png)
 
 ---
 
