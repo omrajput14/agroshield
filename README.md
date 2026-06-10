@@ -2,9 +2,17 @@
   <img src="images/logo.png" alt="AgroShield AI Logo" width="120" />
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Revolution%20Automation-Project-10b981?style=for-the-badge&logo=anthropic&logoColor=white" alt="Revolution Automation" />
+  <img src="https://img.shields.io/badge/Built%20with-Anthropic%20Claude-6366f1?style=for-the-badge&logo=anthropic&logoColor=white" alt="Built with Anthropic" />
+  <img src="https://img.shields.io/badge/Phase-Software%20Only-f59e0b?style=for-the-badge" alt="Phase: Software Only" />
+</p>
+
 # AgroShield AI: Software & Predictive Analytics Platform
 
 > **AI-Driven Crop Protection & Intelligent Windbreak Net Automation for Banana Farmers**
+
+> *This project was developed as part of the **Revolution Automation** initiative, exploring how Anthropic's Claude AI can be used as a development co-pilot to rapidly prototype real-world IoT and machine learning systems for agriculture. AgroShield AI is a proof-of-concept platform demonstrating the power of AI-assisted engineering — from database design and ML model training to a full-stack React dashboard — built by a student team.*
 
 ---
 
@@ -22,6 +30,27 @@
 **AgroShield AI** is an advanced, real-time IoT monitoring and predictive analytics platform built specifically for banana farmers to protect their crops against severe winds, cyclones, and adverse weather conditions.
 
 By combining live sensor telemetry with a Scikit-Learn Machine Learning engine, AgroShield AI proactively predicts crop damage probability and automatically deploys windbreak nets to save yields before storms hit.
+
+---
+
+## 🎬 Demo Video
+
+Watch AgroShield AI in action — live dashboard walkthrough, AI predictions, and storm simulation demo:
+
+[![AgroShield AI Demo — click to watch](images/dashboard.png)](YOUR_YOUTUBE_LINK_HERE)
+
+> 📺 **[▶ Watch on YouTube](YOUR_YOUTUBE_LINK_HERE)**
+
+---
+
+## 📂 Presentation & Assets
+
+The full project presentation and demo video used for showcasing AgroShield AI are available in the `assects/` folder.
+
+| Asset | Description |
+|---|---|
+| 📊 [`AgroShield_AI_Precision_Protection.pptx`](assects/ppt/AgroShield_AI_Precision_Protection.pptx) | Full slide deck — system overview, ML model, architecture, and roadmap |
+| 🎥 [`AgroShield_AI__Engineering_Proactive_Crop_Defense.mp4`](assects/vid/AgroShield_AI__Engineering_Proactive_Crop_Defense.mp4) | Demo walkthrough video — dashboard, AI predictions & storm simulation |
 
 ---
 
@@ -166,6 +195,11 @@ flowchart TD
 │   │   └── ml_models/    # Trained Random Forest model binaries
 │   ├── scripts/          # ML training & storm simulation scripts
 │   └── requirements.txt
+├── assects/              # Presentation & media assets
+│   ├── ppt/              # PowerPoint slide deck
+│   │   └── AgroShield_AI_Precision_Protection.pptx
+│   └── vid/              # Demo walkthrough video
+│       └── AgroShield_AI__Engineering_Proactive_Crop_Defense.mp4
 ├── images/               # App screenshots and project logo (used in this README)
 │   ├── logo.png
 │   ├── dashboard.png
