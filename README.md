@@ -37,9 +37,9 @@ By combining live sensor telemetry with a Scikit-Learn Machine Learning engine, 
 
 Watch AgroShield AI in action — live dashboard walkthrough, AI predictions, and storm simulation demo:
 
-[![AgroShield AI Demo — click to watch](images/dashboard.png)](YOUR_YOUTUBE_LINK_HERE)
+[![AgroShield AI — Predict. Protect. Preserve.](assects/images/image.png)](https://youtu.be/lqcOEQ8FuXY?si=7jxWMuvf7y3I1hCn)
 
-> 📺 **[▶ Watch on YouTube](YOUR_YOUTUBE_LINK_HERE)**
+> 📺 **[▶ Watch on YouTube](https://youtu.be/lqcOEQ8FuXY?si=7jxWMuvf7y3I1hCn)**
 
 ---
 
