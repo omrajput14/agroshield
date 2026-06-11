@@ -1,0 +1,24 @@
+# AgroShield AI — Render Deployment Configuration
+# This file lets you deploy both frontend and backend to Render in one click.
+# Visit https://render.com/docs/render-yaml-spec for full reference.
+
+services:
+  # ─── Backend: FastAPI ────────────────────────────────────────────────────────
+  - type: web
+    name: agroshield-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./agroshield.db   # swap to managed PG URL when ready
+      - key: SECRET_KEY
+        generateValue: true                # Render auto-generates a secure value
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+      - key: FRONTEND_URL
+        value: https://agroshield-ai.vercel.app  # update after Vercel deploy

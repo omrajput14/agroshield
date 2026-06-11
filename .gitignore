@@ -1,3 +1,4 @@
+# ===== Frontend =====
 # Logs
 logs
 *.log
@@ -7,10 +8,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build output (built on deploy, don't commit)
 dist
 dist-ssr
+
+# Local env files
 *.local
+.env
+.env.local
+.env.*.local
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +31,32 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# ===== Backend =====
+# Python virtual environment
+backend/venv/
+venv/
+.venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# SQLite database (never commit DB files)
+backend/*.db
+*.db
+
+# Backend secrets
+backend/.env
+
+# ML model artifacts (if large — add to git-lfs or exclude)
+# backend/app/ml_models/*.pkl
+# backend/app/ml_models/*.joblib
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
