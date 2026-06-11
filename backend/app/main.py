@@ -1,5 +1,6 @@
 """AgroShield AI — FastAPI Entry Point."""
 
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -22,16 +23,34 @@ from app.routers import (
     nets,
 )
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Run startup tasks: seed the DB if empty."""
+    try:
+        from app.seed import seed_db
+        seed_db()
+    except Exception as e:
+        print(f"[Seed] Warning: {e}")
+    yield
+
+
 app = FastAPI(
     title="AgroShield AI Backend",
     description="Intelligent wind-protection system for banana farms",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL, "http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        settings.FRONTEND_URL,
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://agroshield10.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
