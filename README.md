@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/logo.png" alt="AgroShield AI Logo" width="120" />
+  <img src="assects/images/logo.png" alt="AgroShield AI Logo" width="120" />
 </p>
 
 <p align="center">
@@ -65,50 +65,50 @@ The full project presentation and demo video used for showcasing AgroShield AI a
 ### 🖥️ Farm Dashboard
 Real-time wind telemetry across all farms, net deployment status, and live AI risk predictions — all in a single view.
 
-![Farm Dashboard — full sidebar](images/dashboard.png)
-![Farm Dashboard — collapsed sidebar](images/dashboard-collapsed.png)
+![Farm Dashboard — full sidebar](assects/images/dashboard.png)
+![Farm Dashboard — collapsed sidebar](assects/images/dashboard-collapsed.png)
 
 ---
 
 ### 🤖 AI Predictions
 Machine learning–powered damage risk scores for each registered farm. Shows model accuracy (94.2%), true positive rate (91.8%), peak wind forecast time, and actionable AI recommendations.
 
-![AI Predictions Page](images/ai-predictions.png)
+![AI Predictions Page](assects/images/ai-predictions.png)
 
 ---
 
 ### 🌤️ Weather Forecasts
 7-day wind forecast bar chart with per-day max wind speed, gust levels, and rainfall. Includes a 24-hour hourly breakdown for precise planning.
 
-![Weather Forecasts Page](images/forecasts.png)
+![Weather Forecasts Page](assects/images/forecasts.png)
 
 ---
 
 ### 📊 Analytics
 Performance metrics dashboard showing total deployments (147), average net response time (4.2s), losses prevented (₹28.5L), and risk distribution donut chart across all farms.
 
-![Analytics Page](images/analytics.png)
+![Analytics Page](assects/images/analytics.png)
 
 ---
 
 ### 📋 System Events
 Full audit trail of all critical alerts, auto-deployments, and system activities — filterable by type (Alert / Deployment / System).
 
-![System Events Page](images/events.png)
+![System Events Page](assects/images/events.png)
 
 ---
 
 ### 📝 Damage Reports
 Report, track, and log crop damage incidents across farms with severity classification and estimated loss tracking in INR.
 
-![Damage Reports Page](images/damage-reports.png)
+![Damage Reports Page](assects/images/damage-reports.png)
 
 ---
 
 ### ⚙️ Settings
 Configure user profile, notification preferences (SMS, Email, Push), and wind speed thresholds (Warning → Auto Deploy → Critical) with interactive sliders.
 
-![Settings Page](images/settings.png)
+![Settings Page](assects/images/settings.png)
 
 ---
 
